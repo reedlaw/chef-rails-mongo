@@ -6,14 +6,12 @@ the recipes from there.
 
 Target system
 -------------
-
 * Ubuntu 11.04
 * Ruby 1.9.2-p290
 * Nginx 1.0.6
 * Mongodb 2.0.0
 * Unicorn
 * Rails 3.1
-
 
 To install the latest ruby, it will help to have a `.deb` package
 available. I followed the instructions
@@ -37,4 +35,12 @@ inside the block:
 The Unicorn cookbook is relatively simple so I vendored it as well:
 
     knife cookbook site vendor unicorn
+
+
+Cleanup
+-------
+You can easily get rid of all those branches created by knife like so:
+
+    git branch -D `git for-each-ref --format="%(refname:short)"
+    refs/heads/chef-vendor\*`
 

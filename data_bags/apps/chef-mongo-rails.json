@@ -1,0 +1,18 @@
+{
+  "id": "chef-mongo-rails",
+  "server_roles": [
+    "rails_demo"
+  ],
+  "repository": "git://github.com/reedlaw/chef-tutorial.git",
+  "revision": {
+    "_default": "HEAD"
+  },
+  "deploy_to": "/mnt/chef-mongo-rails",
+  "deploy_key": "",
+  "force": {
+    "_default": false
+  },
+  "migrate": {
+    "_default": true
+  }
+}
