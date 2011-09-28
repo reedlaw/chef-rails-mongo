@@ -18,4 +18,4 @@ knife[:aws_ssh_key_id]        = ENV['AWS_SSH_KEY_ID']
 
 knife[:availability_zone] = "us-east-1a"
 knife[:region]            = "us-east-1"
-knife[:aws_image_id]      = "ami-81b275e8"
+knife[:aws_image_id]      = "ami-e2af508b"

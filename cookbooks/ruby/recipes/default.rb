@@ -26,11 +26,6 @@ dpkg_package "ruby" do
 end
 
 link "/usr/bin/ruby" do
-  action :delete
-  only_if "test -L /usr/bin/ruby"
-end
-
-link "/usr/bin/ruby" do
   to "/usr/bin/ruby1.9.2"
 end
 
