@@ -30,7 +30,7 @@ when "debian", "ubuntu"
   end
 
   apt_repository "10gen" do
-    uri "http://downloads-distro.mongodb.org/repo/debian-sysvinit"
+    uri "http://downloads-distro.mongodb.org/repo/ubuntu-upstart"
     distribution "dist"
     components ["10gen"]
     keyserver "keyserver.ubuntu.com"

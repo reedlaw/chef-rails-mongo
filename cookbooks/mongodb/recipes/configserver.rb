@@ -22,6 +22,7 @@
 include_recipe "mongodb"
 
 service "mongodb" do
+  provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [:disable, :stop]
 end

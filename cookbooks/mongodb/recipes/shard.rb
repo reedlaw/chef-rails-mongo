@@ -23,6 +23,7 @@ include_recipe "mongodb::default"
 
 # disable and stop the default mongodb instance
 service "mongodb" do
+  provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [:disable, :stop]
 end

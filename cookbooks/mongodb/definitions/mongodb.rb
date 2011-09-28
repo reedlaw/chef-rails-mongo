@@ -115,6 +115,7 @@ define :mongodb_instance, :mongodb_type => "mongod" , :action => [:enable, :star
   
   # service
   service name do
+    provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true
     action service_action
     notifies service_notifies
