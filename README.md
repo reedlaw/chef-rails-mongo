@@ -12,6 +12,7 @@ Target system
 * Rails 3.1
 * Mongodb 2.0.0
 
-To install the latest ruby, it will help to have a .deb package
-available. I followed the instructions (here)[http://threebrothers.org/brendan/blog/ruby-1-9-2-on-ubuntu-11-04/]
-
+To install the latest ruby, it will help to have a `.deb` package
+available. I followed the instructions
+[here](http://threebrothers.org/brendan/blog/ruby-1-9-2-on-ubuntu-11-04/). I
+also packaged `nginx 1.0.6` according to [these instructions](http://ubuntuforums.org/showthread.php?t=1105902).

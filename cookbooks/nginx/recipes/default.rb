@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ruby
+# Cookbook Name:: nginx
 # Recipe:: default
 #
 # Copyright 2011, Smashing Boxes
@@ -17,7 +17,32 @@
 # limitations under the License.
 #
 
-dpkg_package "ruby" do
-  source "ruby1.9.2_1.9.2-p290-1_i386.deb"
+dpkg_package "nginx-common" do
+  source "nginx-common_1.0.6-0ubuntu1_all.deb"
 end
 
+dpkg_package "nginx-full" do
+  source "nginx-full_1.0.6-0ubuntu1_i386.deb"
+end
+
+%w{nxensite nxdissite}.each do |nxscript|
+  template "/usr/sbin/#{nxscript}" do
+    source "#{nxscript}.erb"
+    mode 0755
+    owner "root"
+    group "root"
+  end
+end
+
+template "nginx.conf" do
+  path "/etc/nginx/nginx.conf"
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+service "nginx" do
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
+end
