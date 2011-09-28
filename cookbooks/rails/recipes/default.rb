@@ -17,85 +17,13 @@
 # limitations under the License.
 #
 
-app = node.run_state[:current_app]
-
-gem_package "bundler" do
-  action :install
-end
-
-directory app['deploy_to'] do
-  owner "nobody"
-  group "nogroup"
-  mode '0755'
-  recursive true
-end
-
-directory "#{app['deploy_to']}/shared" do
-  owner "nobody"
-  group "nogroup"
-  mode '0755'
-  recursive true
-end
-
-%w{ log pids system vendor_bundle }.each do |dir|
-
-  directory "#{app['deploy_to']}/shared/#{dir}" do
-    owner "nobody"
-    group "nogroup"
-    mode '0755'
-    recursive true
-  end
-
-end
-
-if app.has_key?("deploy_key")
-  ruby_block "write_key" do
-    block do
-      f = ::File.open("#{app['deploy_to']}/id_deploy", "w")
-      f.print(app["deploy_key"])
-      f.close
-    end
-    not_if do ::File.exists?("#{app['deploy_to']}/id_deploy"); end
-  end
-
-  file "#{app['deploy_to']}/id_deploy" do
-    owner "nobody"
-    group "nogroup"
-    mode '0600'
-  end
-
-  template "#{app['deploy_to']}/deploy-ssh-wrapper" do
-    source "deploy-ssh-wrapper.erb"
-    owner "nobody"
-    group "nogroup"
-    mode "0755"
-    variables app.to_hash
-  end
-end
-
-
-## Then, deploy
-deploy_revision app['id'] do
-  revision app['revision'][node.chef_environment]
-  repository app['repository']
-  user "nobody"
-  group "nogroup"
-  deploy_to app['deploy_to']
-  environment 'RAILS_ENV' => rails_env
-  action app['force'][node.chef_environment] ? :force_deploy : :deploy
-  ssh_wrapper "#{app['deploy_to']}/deploy-ssh-wrapper" if app['deploy_key']
-  shallow_clone true
-  before_migrate do
-    link "#{release_path}/vendor/bundle" do
-      to "#{app['deploy_to']}/shared/vendor_bundle"
-    end
-    common_groups = %w{development test cucumber staging production}
-    execute "bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
-      ignore_failure true
-      cwd release_path
+search(:apps) do |app|
+  (app["server_roles"] & node.run_list.roles).each do |app_role|
+    app["type"][app_role].each do |thing|
+      node.run_state[:current_app] = app
+      include_recipe "application::#{thing}"
     end
   end
-  before_symlink do
-    execute "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
-  end
 end
+
+node.run_state.delete(:current_app)

@@ -41,6 +41,7 @@ Cleanup
 -------
 You can easily get rid of all those branches created by knife like so:
 
-    git branch -D `git for-each-ref --format="%(refname:short)"
-    refs/heads/chef-vendor\*`
+    git branch -D `git for-each-ref --format="%(refname:short)" refs/heads/chef-vendor\*`
+
+
 
