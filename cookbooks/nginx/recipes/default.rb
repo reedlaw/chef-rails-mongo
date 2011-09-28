@@ -17,12 +17,26 @@
 # limitations under the License.
 #
 
-dpkg_package "nginx-common" do
+%w{libgd2-noxpm libjpeg62 libxslt1.1}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+cookbook_file "/tmp/nginx-common_1.0.6-0ubuntu1_all.deb" do
   source "nginx-common_1.0.6-0ubuntu1_all.deb"
 end
 
-dpkg_package "nginx-full" do
+dpkg_package "nginx-common" do
+  source "/tmp/nginx-common_1.0.6-0ubuntu1_all.deb"
+end
+
+cookbook_file "/tmp/nginx-full_1.0.6-0ubuntu1_i386.deb" do
   source "nginx-full_1.0.6-0ubuntu1_i386.deb"
+end
+
+dpkg_package "nginx-full" do
+  source "/tmp/nginx-full_1.0.6-0ubuntu1_i386.deb"
 end
 
 %w{nxensite nxdissite}.each do |nxscript|

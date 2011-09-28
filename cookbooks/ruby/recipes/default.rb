@@ -17,7 +17,20 @@
 # limitations under the License.
 #
 
-dpkg_package "ruby" do
+cookbook_file "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb" do
   source "ruby1.9.2_1.9.2-p290-1_i386.deb"
+end
+
+dpkg_package "ruby" do
+  source "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb"
+end
+
+link "/usr/bin/ruby" do
+  action :delete
+  only_if "test -L /usr/bin/ruby"
+end
+
+link "/usr/bin/ruby" do
+  to "/usr/bin/ruby1.9.2"
 end
 
