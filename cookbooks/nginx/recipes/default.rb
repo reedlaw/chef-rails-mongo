@@ -56,6 +56,14 @@ template "nginx.conf" do
   mode 0644
 end
 
+template "init-nginx.conf" do
+  path "/etc/init/nginx.conf"
+  source "init-nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 service "nginx" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :reload => true

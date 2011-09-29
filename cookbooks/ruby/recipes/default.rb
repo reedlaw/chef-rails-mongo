@@ -21,6 +21,10 @@ cookbook_file "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb" do
   source "ruby1.9.2_1.9.2-p290-1_i386.deb"
 end
 
+package "ruby" do
+  action :remove
+end
+
 dpkg_package "ruby" do
   source "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb"
 end
@@ -28,4 +32,19 @@ end
 link "/usr/bin/ruby" do
   to "/usr/bin/ruby1.9.2"
 end
+ 
+execute "gem" do
+  command "gem update --system"
+  action :run
+  environment ({'REALLY_GEM_UPDATE_SYSTEM' => 'true'})
+end
 
+gem_package "ohai" do
+  options("--no-rdoc --no-ri")
+  action :install
+end
+
+gem_package "chef" do
+  options("--no-rdoc --no-ri")
+  action :install
+end

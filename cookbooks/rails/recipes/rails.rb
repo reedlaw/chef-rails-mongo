@@ -113,12 +113,12 @@ deploy_revision app['id'] do
       to "#{app['deploy_to']}/shared/vendor_bundle"
     end
     common_groups = %w{development test cucumber staging production}
-    execute "bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+    execute "/var/lib/gems/1.8/bin/bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
       ignore_failure true
       cwd release_path
     end
   end
   before_symlink do
-    execute "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
+    execute "cd #{release_path}; RAILS_ENV=#{rails_env} /var/lib/gems/1.8/bin/bundle exec rake assets:precompile"
   end
 end
