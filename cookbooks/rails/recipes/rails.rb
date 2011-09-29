@@ -43,6 +43,7 @@ end
 
 # We'll need this to install bundled gems
 gem_package "bundler" do
+  options("--no-rdoc --no-ri")
   action :install
 end
 
