@@ -4,5 +4,5 @@ run_list(
          "recipe[ruby@0.0.1]",
          "recipe[nginx@0.0.1]",
          "recipe[unicorn]",
-         "recipe[rails]"
+         "recipe[rails@0.0.1]"
 )

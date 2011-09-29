@@ -5,7 +5,8 @@
   ],
   "type": {
     "chef-rails-mongo": [
-      "rails"
+      "rails",
+      "unicorn"
     ]
   },
   "repository": "git://github.com/reedlaw/chef-rails-mongo.git",
