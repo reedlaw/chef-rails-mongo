@@ -8,11 +8,11 @@
       "rails"
     ]
   },
-  "repository": "git://github.com/reedlaw/chef-tutorial.git",
+  "repository": "git://github.com/reedlaw/chef-rails-mongo.git",
   "revision": {
     "_default": "HEAD"
   },
-  "deploy_to": "/mnt/chef-rails-mongo",
+  "deploy_to": "/srv/chef-rails-mongo",
   "deploy_key": "",
   "force": {
     "_default": false

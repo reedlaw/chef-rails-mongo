@@ -1,6 +1,6 @@
-maintainer       "YOUR_COMPANY_NAME"
-maintainer_email "YOUR_EMAIL"
-license          "All rights reserved"
+maintainer       "Reed Law"
+maintainer_email "reed@smashingboxes.com"
+license          'Apache v2.0'
 description      "Installs/Configures rails"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"

@@ -18,7 +18,30 @@
 #
 
 app = node.run_state[:current_app]
+rails_env = (node.chef_environment =~ /_default/ ? "production" : node.chef_environment)
+node.run_state[:rails_env] = rails_env
 
+## First, install any application specific packages
+if app['packages']
+  app['packages'].each do |pkg,ver|
+    package pkg do
+      action :install
+      version ver if ver && ver.length > 0
+    end
+  end
+end
+
+## Next, install any application specific gems
+if app['gems']
+  app['gems'].each do |gem,ver|
+    gem_package gem do
+      action :install
+      version ver if ver && ver.length > 0
+    end
+  end
+end
+
+# We'll need this to install bundled gems
 gem_package "bundler" do
   action :install
 end
