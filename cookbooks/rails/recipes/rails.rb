@@ -112,17 +112,11 @@ deploy_revision app['id'] do
   before_migrate do
     user "nobody"
     group "nogroup"
-    link "#{release_path}/vendor/cache" do
+    link "#{release_path}/vendor/bundle" do
       to "#{app['deploy_to']}/shared/vendor_bundle"
     end
-    execute "bundle package" do
-      user "nobody"
-      group "nogroup"
-      ignore_failure true
-      cwd release_path
-    end
     common_groups = %w{development test cucumber staging production}
-    execute "bundle install --local --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+    execute "bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
       user "nobody"
       group "nogroup"
       ignore_failure true
