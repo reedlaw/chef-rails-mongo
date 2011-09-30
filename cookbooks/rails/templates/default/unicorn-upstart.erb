@@ -1,0 +1,10 @@
+description "Test rails application"
+
+start on runlevel [2]
+stop on runlevel [016]
+
+console owner
+
+exec /usr/bin/unicorn_rails -c /etc/unicorn/<%= id %>.rb
+
+respawn

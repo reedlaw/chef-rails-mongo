@@ -116,7 +116,7 @@ deploy_revision app['id'] do
       to "#{app['deploy_to']}/shared/vendor_bundle"
     end
     common_groups = %w{development test cucumber staging production}
-    execute "bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+    execute "bundle install --local --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
       user "nobody"
       group "nogroup"
       ignore_failure true

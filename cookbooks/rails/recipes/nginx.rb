@@ -26,13 +26,13 @@ cookbook_file "/etc/nginx/sites-available/#{app['id']}" do
   mode 0644
   owner "root"
   group "root"
-  notifies :restart, "service[nginx]"
+  notifies :reload, "service[nginx]"
 end
 
 nginx_site "default" do
-  action :disable
+  enable false
 end
 
 nginx_site app['id'] do
-  action :enable
+  enable true
 end

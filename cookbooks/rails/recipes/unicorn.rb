@@ -40,10 +40,18 @@ unicorn_config "/etc/unicorn/#{app['id']}.rb" do
   before_fork node[:unicorn][:before_fork] 
 end
 
-if ::File.exists?(::File.join(app['deploy_to'], "current"))
-  d = resources(:deploy_revision => app['id'])
-  d.restart_command do
-    execute "/etc/init.d/#{app['id']} hup"
-  end
+template "/etc/init/unicorn.conf" do
+  source "unicorn-upstart.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables app.to_hash
 end
 
+service "unicorn" do
+  provider Chef::Provider::Service::Upstart
+  enabled true
+  running true
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
+end
