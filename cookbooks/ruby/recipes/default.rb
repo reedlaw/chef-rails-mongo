@@ -47,6 +47,11 @@ execute "gem" do
   environment ({'REALLY_GEM_UPDATE_SYSTEM' => 'true'})
 end
 
+execute "gem" do
+  command "gem update --no-rdoc --no-ri"
+  action :run
+end
+
 gem_package "ohai" do
   options("--no-rdoc --no-ri")
   action :install

@@ -110,16 +110,28 @@ deploy_revision app['id'] do
   ssh_wrapper "#{app['deploy_to']}/deploy-ssh-wrapper" if app['deploy_key']
   shallow_clone true
   before_migrate do
-    link "#{release_path}/vendor/bundle" do
+    user "nobody"
+    group "nogroup"
+    link "#{release_path}/vendor/cache" do
       to "#{app['deploy_to']}/shared/vendor_bundle"
     end
+    execute "bundle package" do
+      user "nobody"
+      group "nogroup"
+      ignore_failure true
+      cwd release_path
+    end
     common_groups = %w{development test cucumber staging production}
-    execute "/var/lib/gems/1.8/bin/bundle install --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+    execute "bundle install --local --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+      user "nobody"
+      group "nogroup"
       ignore_failure true
       cwd release_path
     end
   end
   before_symlink do
-    execute "cd #{release_path}; RAILS_ENV=#{rails_env} /var/lib/gems/1.8/bin/bundle exec rake assets:precompile"
+    user "nobody"
+    group "nogroup"
+    execute "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
   end
 end
