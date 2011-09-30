@@ -32,7 +32,15 @@ end
 link "/usr/bin/ruby" do
   to "/usr/bin/ruby1.9.2"
 end
- 
+
+link "/usr/bin/irb" do
+  to "/usr/bin/irb1.9.2"
+end
+
+link "/usr/bin/gem" do
+  to "/usr/bin/gem1.9.2"
+end
+
 execute "gem" do
   command "gem update --system"
   action :run

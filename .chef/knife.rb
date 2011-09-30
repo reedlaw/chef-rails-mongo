@@ -19,3 +19,14 @@ knife[:aws_ssh_key_id]        = ENV['AWS_SSH_KEY_ID']
 knife[:availability_zone] = "us-east-1a"
 knife[:region]            = "us-east-1"
 knife[:aws_image_id]      = "ami-e2af508b"
+
+class Chef::Knife::Ec2ServerCreate < Chef::Knife
+  alias :original_run :run
+
+  def run
+    @initial_sleep_delay = 20
+    puts "sleeping #{@initial_sleep_delay} this time"
+
+    original_run
+  end
+end
