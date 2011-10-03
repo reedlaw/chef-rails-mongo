@@ -27,8 +27,9 @@ node.default[:unicorn][:worker_processes] = [node[:cpu][:total].to_i * 4, 8].min
 node.default[:unicorn][:preload_app] = false
 node.default[:unicorn][:before_fork] = 'sleep 1' 
 node.default[:unicorn][:port] = '8080'
-node.default[:unicorn][:stderr_path] = ::File.exists?(::File.join(app['deploy_to'], "current", "log", "unicorn.stderr.log"))
-node.default[:unicorn][:stdout_path] = ::File.exists?(::File.join(app['deploy_to'], "current", "log", "unicorn.stdout.log"))
+node.default[:unicorn][:stderr_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
+node.default[:unicorn][:stdout_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
+node.default[:unicorn][:pid] = ::File.join(app['deploy_to'], "shared", "pids", "unicorn.pid")
 node.set[:unicorn][:options] = { :tcp_nodelay => true, :backlog => 100 }
 
 unicorn_config "/etc/unicorn/#{app['id']}.rb" do

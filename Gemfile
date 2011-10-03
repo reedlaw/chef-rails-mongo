@@ -17,10 +17,11 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
+group :production do
+  gem 'unicorn'
+end
 
-# Use unicorn as the web server
-# gem 'unicorn'
+gem 'jquery-rails'
 
 # Deploy with Capistrano
 # gem 'capistrano'
