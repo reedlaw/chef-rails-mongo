@@ -19,7 +19,7 @@
 
 include_recipe "apt"
 
-ppa "ppa:chris-lea/node.js"
+ppa "chris-lea/node.js"
 
 package "nodejs" do
   action :install

@@ -47,6 +47,11 @@ gem_package "bundler" do
   action :install
 end
 
+# We need to prepare the user 'nobody'
+execute "nobody-home" do
+  command "usermod --home #{app['deploy_to']} nobody"
+end
+
 directory app['deploy_to'] do
   owner "nobody"
   group "nogroup"

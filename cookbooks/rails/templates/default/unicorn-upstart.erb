@@ -5,6 +5,6 @@ stop on runlevel [016]
 
 console owner
 
-exec /usr/bin/unicorn_rails -c /etc/unicorn/<%= id %>.rb
+exec /usr/bin/unicorn_rails -c /etc/unicorn/<%= @app_name %>.rb
 
 respawn

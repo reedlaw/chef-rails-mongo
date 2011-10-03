@@ -45,7 +45,10 @@ template "/etc/init/unicorn.conf" do
   owner "root"
   group "root"
   mode 0644
-  variables app.to_hash
+  variables(
+            :app_name => app['id'],
+            :deploy_to => app['deploy_to']
+  )
 end
 
 service "unicorn" do
