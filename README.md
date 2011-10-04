@@ -49,11 +49,7 @@ Deploy
 Assuming a properly configured `knife.rb` and the proper keys for AWS
 and Chef Server, you can simply run a command like this:
 
-    knife ec2 server create --node-name chef-rails-mongo --groups
-    single_instance_production --image ami-e2af508b --flavor m1.small
-    --distro ubuntu11.04-apt --ssh-key ampms -i ~/.ec2/ampms -x ubuntu
-    --environment production --run-list
-    'role[base],role[mongodb],role[chef-rails-mongo]'
+    knife ec2 server create --node-name chef-rails-mongo --groups single_instance_production --image ami-e2af508b --flavor m1.small --distro ubuntu11.04-apt --ssh-key ampms -i ~/.ec2/ampms -x ubuntu --environment production --run-list 'role[base],role[mongodb],role[chef-rails-mongo]'
 
 Be sure you have an EC2 security group named
 `single_instance_production` with ports 22 (SSH) and 80 (HTTP) opened.
