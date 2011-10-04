@@ -21,7 +21,12 @@ app = node.run_state[:current_app]
 rails_env = (node.chef_environment =~ /_default/ ? "production" : node.chef_environment)
 node.run_state[:rails_env] = rails_env
 
-## First, install any application specific packages
+## Get this first.
+package "build-essential" do
+  action :install
+end
+
+## Then, install any application specific packages
 if app['packages']
   app['packages'].each do |pkg,ver|
     package pkg do

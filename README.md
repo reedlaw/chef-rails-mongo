@@ -62,6 +62,7 @@ You can easily get rid of all those branches created by knife like so:
 
 TO-DO
 -----
+* Make Unicorn perform ["rolling restarts"](https://github.com/blog/517-unicorn)
 * Configure a monitoring service such as `bluepill` or Monit.
 * Set up automated backup to S3
 * Postfix or other mail service

@@ -21,11 +21,41 @@ app = node.run_state[:current_app]
 
 include_recipe "unicorn"
 
+pid = ::File.join(app['deploy_to'], "shared", "pids", "unicorn.pid")
+
 node.default[:unicorn][:worker_timeout] = 60
-node.default[:unicorn][:preload_app] = false
+node.default[:unicorn][:preload_app] = true
 node.default[:unicorn][:worker_processes] = [node[:cpu][:total].to_i * 4, 8].min
-node.default[:unicorn][:preload_app] = false
-node.default[:unicorn][:before_fork] = 'sleep 1' 
+node.default[:unicorn][:before_fork] = %{
+  old_pid = '#{pid}.oldbin'
+  if File.exists?(old_pid) && server.pid != old_pid
+    begin
+      Process.kill("QUIT", File.read(old_pid).to_i)
+    rescue Errno::ENOENT, Errno::ESRCH
+      # someone else did our job for us
+    end
+  end
+}
+node.default[:unicorn][:after_fork] = %{
+  begin
+    uid, gid = Process.euid, Process.egid
+    user, group = 'nobody', 'nogroup'
+    target_uid = 65534
+    target_gid = 65534
+    worker.tmp.chown(target_uid, target_gid)
+    if uid != target_uid || gid != target_gid
+      Process.initgroups(user, target_gid)
+      Process::GID.change_privilege(target_gid)
+      Process::UID.change_privilege(target_uid)
+    end
+  rescue => e
+    if RAILS_ENV == 'development'
+      STDERR.puts "couldn't change user, oh well"
+    else
+      raise e
+    end
+  end
+}
 node.default[:unicorn][:port] = '8080'
 node.default[:unicorn][:stderr_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
 node.default[:unicorn][:stdout_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
