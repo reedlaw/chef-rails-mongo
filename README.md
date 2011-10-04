@@ -1,8 +1,9 @@
-Cooking from scratch
-====================
+Chef for Rails and Mongo
+========================
 
-We're going to start out by building our ideal system and then extract
-the recipes from there.
+The goal of this example is to have a ["rolling
+restart"](https://github.com/blog/517-unicorn) capable base system for
+Rails apps with Mongodb backends.
 
 Target system
 -------------
