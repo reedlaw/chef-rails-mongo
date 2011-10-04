@@ -74,21 +74,18 @@ unicorn_config "/etc/unicorn/#{app['id']}.rb" do
   before_fork node[:unicorn][:before_fork]
 end
 
-template "/etc/init/unicorn.conf" do
-  source "unicorn-upstart.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  variables(
-            :app_name => app['id'],
-            :deploy_to => app['deploy_to']
-  )
+execute "start-unicorn" do
+  user "nobody"
+  group "nogroup"
+  command "unicorn_rails -c /etc/config/#{app['id']}.rb -D"
+  not_if do
+    File.exists?(pid)
+  end
 end
 
-service "unicorn" do
-  provider Chef::Provider::Service::Upstart
-  enabled true
-  running true
-  supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+execute "rolling-restart" do
+  command "kill -s USR2 $( cat #{pid} )"
+  only_if do
+    File.exists?(pid)
+  end
 end

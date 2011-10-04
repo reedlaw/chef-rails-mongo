@@ -21,10 +21,6 @@ cookbook_file "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb" do
   source "ruby1.9.2_1.9.2-p290-1_i386.deb"
 end
 
-package "ruby" do
-  action :remove
-end
-
 dpkg_package "ruby" do
   source "/tmp/ruby1.9.2_1.9.2-p290-1_i386.deb"
 end
