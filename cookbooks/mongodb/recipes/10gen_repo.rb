@@ -22,26 +22,10 @@
 # Sets up the repositories for stable 10gen packages found here:
 # http://www.mongodb.org/downloads#packages
 
-case node['platform']
-when "debian", "ubuntu"
-  # Adds the repo: http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages
-  execute "apt-get update" do
-    action :nothing
-  end
+cookbook_file "/tmp/mongodb-10gen_2.0.0_i386.deb" do
+  source "mongodb-10gen_2.0.0_i386.deb"
+end
 
-  apt_repository "10gen" do
-    uri "http://downloads-distro.mongodb.org/repo/ubuntu-upstart"
-    distribution "dist"
-    components ["10gen"]
-    keyserver "keyserver.ubuntu.com"
-    key "7F0CEB10"
-    action :add
-    notifies :run, "execute[apt-get update]", :immediately
-  end
-
-  package "mongodb" do
-    package_name "mongodb-10gen"
-  end
-else
-    Chef::Log.warn("Adding the #{node['platform']} 10gen repository is not yet not supported by this cookbook")
+dpkg_package "mongodb-10gen" do
+  source "/tmp/mongodb-10gen_2.0.0_i386.deb"
 end

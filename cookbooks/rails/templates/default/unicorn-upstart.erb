@@ -1,10 +1,18 @@
-description "Test rails application"
+description "Start rails application with unicorn server"
+version "1.0"
+author "Reed Law"
 
 start on runlevel [2]
 stop on runlevel [016]
 
 console owner
 
-exec /usr/bin/unicorn_rails -c /etc/unicorn/<%= @app_name %>.rb
+env APP_HOME=<%= @deploy_to %>/current
+env RAILS_ENV=production
+
+script
+chdir $APP_HOME
+exec su -s /bin/sh -c 'exec "$0" "$@"' nobody -- bundle exec unicorn -c /etc/unicorn/chef-rails-mongo.rb -E production
+end script
 
 respawn

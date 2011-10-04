@@ -41,6 +41,12 @@ if app['gems']
   end
 end
 
+# We need therubyracer for any Rails 3.1 apps
+gem_package "therubyracer" do
+  options("--no-rdoc --no-ri")
+  action :install
+end
+
 # We'll need this to install bundled gems
 gem_package "bundler" do
   options("--no-rdoc --no-ri")
@@ -121,9 +127,9 @@ deploy_revision app['id'] do
       to "#{app['deploy_to']}/shared/vendor_bundle"
     end
     common_groups = %w{development test cucumber staging production}
-    execute "bundle install --local --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
-      user "nobody"
-      group "nogroup"
+    execute "bundle install --path #{app['deploy_to']}/shared/vendor_bundle --deployment --without #{(common_groups -([node.chef_environment])).join(' ')}" do
+      user "root"
+      group "root"
       ignore_failure true
       cwd release_path
     end
