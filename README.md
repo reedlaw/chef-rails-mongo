@@ -44,15 +44,21 @@ for both nginx and unicorn. See `roles/chef-rails-mongo.rb` and
 `data_bags/apps/chef-rails-mongo.json` for an
 example role and data bag that will provide a working Rails app.
 
-Deploy
-------
+Provision
+---------
 Assuming a properly configured `knife.rb` and the proper keys for AWS
 and Chef Server, you can simply run a command like this:
 
-    knife ec2 server create --node-name chef-rails-mongo --groups single_instance_production --image ami-e2af508b --flavor m1.small --distro ubuntu11.04-apt --ssh-key ampms -i ~/.ec2/ampms -x ubuntu --environment production --run-list 'role[base],role[mongodb],role[chef-rails-mongo]'
+    knife ec2 server create --node-name chef-rails-mongo --groups single_instance_production --image ami-e2af508b --flavor m1.small --distro ubuntu11.04-apt --ssh-key keyname -i ~/.ec2/keyname -x ubuntu --environment production --run-list 'role[base],role[mongodb],role[chef-rails-mongo]'
 
 Be sure you have an EC2 security group named
 `single_instance_production` with ports 22 (SSH) and 80 (HTTP) opened.
+
+Deploy
+------
+To redeploy the app after pushing to the app repo you can do this:
+
+    knife ssh name:chef-rails-mongo "sudo chef-client" -a ec2.public_hostname -i ~/.ec2/keyname -x ubuntu
 
 Cleanup
 -------

@@ -59,7 +59,7 @@ node.default[:unicorn][:after_fork] = %{
 node.default[:unicorn][:port] = '8080'
 node.default[:unicorn][:stderr_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
 node.default[:unicorn][:stdout_path] = ::File.join(app['deploy_to'], "current", "log", "unicorn.log")
-node.default[:unicorn][:pid] = ::File.join(app['deploy_to'], "shared", "pids", "unicorn.pid")
+node.default[:unicorn][:pid] = pid
 node.set[:unicorn][:options] = { :tcp_nodelay => true, :backlog => 100 }
 
 unicorn_config "/etc/unicorn/#{app['id']}.rb" do
@@ -77,7 +77,9 @@ end
 execute "start-unicorn" do
   user "nobody"
   group "nogroup"
-  command "unicorn_rails -c /etc/config/#{app['id']}.rb -D"
+  cwd ::File.join(app['deploy_to'], 'current')
+  command "bundle exec unicorn_rails -c /etc/unicorn/#{app['id']}.rb -E production -D"
+  notifies :reload, "service[nginx]"
   not_if do
     File.exists?(pid)
   end
